@@ -1,0 +1,3 @@
+/home/leo/dev/c/siera/examples/simulator/ui/build/CMakeFiles/lib-ui.dir
+/home/leo/dev/c/siera/examples/simulator/ui/build/CMakeFiles/edit_cache.dir
+/home/leo/dev/c/siera/examples/simulator/ui/build/CMakeFiles/rebuild_cache.dir

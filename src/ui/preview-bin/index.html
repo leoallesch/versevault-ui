@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>VerseVault LVGL Basic Runtime Test</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #111;
+        }
+
+        #canvas {
+            display: block;
+            width: 100vw;
+            height: 100vh;
+            image-rendering: pixelated;
+        }
+
+        #status {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: #fff;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 10px;
+            border-radius: 6px;
+            z-index: 10;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="status">Initializing runtime...</div>
+    <canvas id="canvas"></canvas>
+
+    <script src="lved-runtime.js"></script>
+    <script>
+        async function start() {
+            try {
+                const Module = await createModule();
+                console.log("Module ready. Exports:", Object.keys(Module));
+
+                Module.onRuntimeInitialized = () => {
+                    console.log("Runtime initialized");
+                    document.getElementById('status').textContent = "Runtime running – canvas should show something";
+
+                    Module.ccall('_lvrt_initialize', 'v', []);
+                    Module.ccall('_ui_versevault_init', 'v', []);
+                    Module.ccall('_demo_create', 'v', []);
+
+                    // Resize
+                    const w = window.innerWidth, h = window.innerHeight;
+                    Module.ccall('_lvrt_resize_canvas', 'v', ['number', 'number'], [w, h]);
+
+                    // Refresh loop
+                    function tick() {
+                        Module.ccall('_lvrt_refresh', 'v', []);
+                        requestAnimationFrame(tick);
+                    }
+                    tick();
+
+                    // Optional: if UI has timelines/animations
+                    // Module.ccall('_lvrt_play_timeline', 'v', []);
+
+                    console.log("Basic runtime started – check for any default UI or color");
+                };
+            } catch (err) {
+                console.error("Init failed:", err);
+                document.getElementById('status').textContent = "Init failed – see console";
+            }
+        }
+
+        start();
+
+        window.addEventListener('resize', () => {
+            if (Module) {
+                Module.ccall('_lvrt_resize_canvas', 'v', ['number', 'number'], [window.innerWidth, window.innerHeight]);
+            }
+        });
+    </script>
+</body>
+
+</html>

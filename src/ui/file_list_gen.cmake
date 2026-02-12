@@ -1,0 +1,9 @@
+list(
+  APPEND
+  PROJECT_SOURCES
+  ${CMAKE_CURRENT_LIST_DIR}/components/button/button_gen.c
+  ${CMAKE_CURRENT_LIST_DIR}/components/column/column_gen.c
+  ${CMAKE_CURRENT_LIST_DIR}/components/demo/demo_gen.c
+  ${CMAKE_CURRENT_LIST_DIR}/components/row/row_gen.c
+  ${CMAKE_CURRENT_LIST_DIR}/ui_versevault_gen.c
+  ${CMAKE_CURRENT_LIST_DIR}/ui_versevault.c)

@@ -1,35 +1,75 @@
-# This basic file is used to compile the runtime for the Editor preview.
-# It is also intended for you to customize it for your own target/project.
+cmake_minimum_required(VERSION 3.16)
 
-# Only set project if this is the top-level CMakeLists.txt
-if (CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
-  cmake_minimum_required(VERSION 3.10)
-  # can be customized
-  project(LVGLProject)
-  set(IS_TOP_LEVEL TRUE)
-else()
-  set(IS_TOP_LEVEL FALSE)
-endif()
+project(versevault-ui
+    VERSION 0.1.0
+    LANGUAGES C CXX
+    DESCRIPTION "VerseVault UI Application"
+)
 
-# This includes the generated list of .c files
-include(${CMAKE_CURRENT_LIST_DIR}/file_list_gen.cmake)
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_C_STANDARD_REQUIRED ON)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-# Create the UI sources as a library
-add_library(lib-ui ${PROJECT_SOURCES})
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(SDL2 REQUIRED sdl2)
 
-# Add the root project folder as include folder
-target_include_directories(lib-ui PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+# Enable siera UI module (includes LVGL)
+set(SIERA_ENABLE_UI ON CACHE BOOL "" FORCE)
+set(SIERA_DRIVER_SIMULATOR ON CACHE BOOL "" FORCE)
 
-# You may use this check to add configuration when compiling for the Editor preview,
-# or for your target.
-if (LV_EDITOR_PREVIEW)
-    # things for the Preview
-else ()
-    target_link_libraries(lib-ui PUBLIC siera::ui)
-endif ()
+add_subdirectory(lib/siera)
 
-if (IS_TOP_LEVEL)
-  # Do something when this is your top level cmakelists.txt
-else()
-  # Do something else if it's not your top level cmakelists.txt
-endif()
+# Generate UI source files from XML (only when XML changes)
+find_program(NODE_EXECUTABLE node REQUIRED)
+file(GLOB_RECURSE UI_XML_SOURCES "${CMAKE_SOURCE_DIR}/src/ui/*.xml")
+set(UI_GENERATE_STAMP "${CMAKE_BINARY_DIR}/ui-generate.stamp")
+
+add_custom_command(
+    OUTPUT ${UI_GENERATE_STAMP}
+    COMMAND ${NODE_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/lved-cli.js generate ${CMAKE_SOURCE_DIR}/src/ui
+    COMMAND ${CMAKE_COMMAND} -E touch ${UI_GENERATE_STAMP}
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    DEPENDS ${UI_XML_SOURCES}
+    COMMENT "Generating UI sources from XML"
+)
+add_custom_target(ui-generate DEPENDS ${UI_GENERATE_STAMP})
+
+add_subdirectory(src/ui)
+add_dependencies(lib-ui ui-generate)
+
+# Application library (platform-agnostic)
+add_library(versevault-app
+    src/view/demo_view.c
+)
+
+target_link_libraries(versevault-app
+    PUBLIC
+        siera::ui
+        lib-ui
+)
+
+target_include_directories(versevault-app
+    PUBLIC
+        src/view
+        src/app
+)
+
+# Simulator target
+add_executable(versevault-simulator
+    src/platform/simulator/main.c
+    src/platform/simulator/display_simulator.c
+)
+
+target_link_libraries(versevault-simulator
+    PRIVATE
+        versevault-app
+        siera::driver
+        ${SDL2_LIBRARIES}
+)
+
+target_include_directories(versevault-simulator
+    PRIVATE
+        ${SDL2_INCLUDE_DIRS}
+        src/platform/simulator
+)
+

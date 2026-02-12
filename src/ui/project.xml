@@ -1,0 +1,7 @@
+<project name="ui_versevault">
+	<targets>
+		<target name="esp32">
+			<display width="400" height="600" />
+		</target>
+	</targets>
+</project>

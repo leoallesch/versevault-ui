@@ -1,0 +1,6 @@
+[submodule "lib/siera"]
+	path = lib/siera
+	url = https://github.com/leoallesch/siera
+[submodule "lib/esv-bible"]
+	path = lib/esv-bible
+	url = https://github.com/lguenth/mdbible

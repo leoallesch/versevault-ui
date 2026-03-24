@@ -1,0 +1,20 @@
+<!-- C04 · BottomBar
+     Permanent footer — contains StatusStrip only.
+     480×26px, fixed at bottom of screen, never toggled. -->
+
+<component>
+    <view extends="lv_obj"
+          name="bottom_bar"
+          width="480" height="28"
+          style_bg_color="0x0A0C0F"
+          style_bg_opa="255"
+          style_border_width="0"
+          style_radius="0"
+          style_pad_top="0"  style_pad_bottom="0"
+          style_pad_left="0" style_pad_right="0"
+          scrollable="false">
+
+        <status_strip/>
+
+    </view>
+</component>

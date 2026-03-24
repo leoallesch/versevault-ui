@@ -1,0 +1,82 @@
+<!-- Main screen — LCD Alarm Clock
+     480×320 px landscape, #0A0C0F background.
+
+     This is the ONE permanent screen. It is never swapped — only subject values change.
+     The C presenter drives all state transitions by updating subjects:
+
+       State         cp_header_style  cp_header_text           clock_blink  cp_footer_mode  cp_widget_visible
+       ─────────────────────────────────────────────────────────────────────────────────────────────────────
+       IDLE          0 (hidden)       ""                       0            2 (alarm)       0
+       EDIT_CLOCK    1 (normal)       "— set time —"           1            1 (hint)        0
+       SET_SINGLE    1 (normal)       "— set alarm —"          1            1 (hint)        0
+       SET_AUTO_EDIT 1 (normal)       "— Monday ● —  …"        1            1 (hint)        1
+       FIRING        2 (alert)        "!! ALARM !!"            0            3 (dismiss)     0
+
+     Layout (flex column, 480×320):
+       ┌──────────────────────────────┐  ← TopBar         28px
+       │ CPHeader (hidden on idle)    │  ← 0 or ~20px
+       │                              │
+       │      ClockDisplay            │  ← flex:1 center
+       │                              │
+       │ DayRow (hidden unless AUTO)  │  ← 0 or ~52px
+       │ CPFooter                     │  ← ~22px
+       └──────────────────────────────┘  ← BottomBar      26px
+-->
+
+<component>
+    <view style_layout="flex"
+          style_flex_flow="column"
+          style_flex_main_place="start"
+          style_flex_cross_place="start"
+          style_bg_color="0x0A0C0F"
+          style_bg_opa="255"
+          style_border_width="0"
+          style_pad_all="0"
+          width="480" height="320"
+          scrollable="false">
+
+        <!-- ─── C01 · TopBar ─────────────────────────────────── -->
+        <top_bar name="top_bar"/>
+
+        <!-- ─── C02 · ContentPanel ───────────────────────────── -->
+        <content_panel name="content_panel">
+
+            <!-- C02a · ContentPanelHeader -->
+            <content_panel_header name="cp_header">
+                <lv_label name="header_label"
+                          style_text_color="0x0E6A3A"
+                          style_text_font="mono_11"
+                          style_text_letter_space="2"
+                          style_text_align="center"
+                          width="100%"
+                          long_mode="dots"/>
+            </content_panel_header>
+
+            <!-- C02b · ContentPanelBody — flex:1, centers ClockDisplay -->
+            <content_panel_body name="cp_body">
+                <clock_display name="clock_display"/>
+            </content_panel_body>
+
+            <!-- C02c · ContentPanelWidget
+                 Hidden except on SET_AUTO_EDIT — C toggles LV_OBJ_FLAG_HIDDEN. -->
+            <content_panel_widget name="cp_widget" hidden="true">
+                <day_row name="day_list"/>
+            </content_panel_widget>
+
+            <!-- C02d · ContentPanelFooter -->
+            <content_panel_footer name="cp_footer">
+                <lv_label name="footer_label"
+                          style_text_color="0x1A7A4A"
+                          style_text_font="mono_11"
+                          style_text_align="center"
+                          width="100%"
+                          long_mode="dots"/>
+            </content_panel_footer>
+
+        </content_panel>
+
+        <!-- ─── C04 · BottomBar ──────────────────────────────── -->
+        <bottom_bar name="bottom_bar"/>
+
+    </view>
+</component>

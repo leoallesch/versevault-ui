@@ -1,0 +1,11 @@
+If:
+    PathMatch: [src/platform/esp32/.*]
+CompileFlags:
+    CompilationDatabase: build/esp32/
+
+---
+
+If:
+    PathMatch: [src/app/.*, src/platform/simulator.*, lib/siera/*]
+CompileFlags:
+    CompilationDatabase: build/simulator/

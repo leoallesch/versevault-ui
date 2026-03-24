@@ -1,0 +1,160 @@
+<globals>
+
+    <!-- =========================================================
+         Design tokens — LCD Alarm Clock
+         480×320 px · phosphor-green VFD aesthetic
+         ========================================================= -->
+
+    <consts>
+        <!-- Screen dimensions -->
+        <px    name="screen_w"        value="480"/>
+        <px    name="screen_h"        value="320"/>
+
+        <!-- Layout spacing -->
+        <px    name="pad_h"           value="22"/>
+        <px    name="pad_v_top"       value="16"/>
+        <px    name="pad_v_bot"       value="14"/>
+        <px    name="tile_gap"        value="5"/>
+        <px    name="tile_pad"        value="8"/>
+
+        <!-- Component heights -->
+        <px    name="topbar_h"        value="28"/>
+        <px    name="bottombar_h"     value="26"/>
+        <px    name="tile_min_w"      value="56"/>
+        <px    name="tile_radius"     value="6"/>
+
+        <!-- Colors — background / surface -->
+        <color name="col_bg"          value="0x0A0C0F"/>
+        <color name="col_surface"     value="0x0D1117"/>
+
+        <!-- Colors — greens -->
+        <color name="col_green"       value="0x1AFF8C"/>
+        <color name="col_mid_green"   value="0x0E8A4A"/>
+        <color name="col_dim_green"   value="0x0E6A3A"/>
+        <color name="col_muted"       value="0x2A5040"/>
+        <color name="col_status"      value="0x1A7A4A"/>
+        <color name="col_hint"        value="0x1A4030"/>
+
+        <!-- Colors — borders -->
+        <color name="col_border_act"  value="0x1A3A28"/>
+        <color name="col_border_def"  value="0x1A2520"/>
+
+        <!-- Colors — alert / amber -->
+        <color name="col_alert"       value="0xF09595"/>
+        <color name="col_amber"       value="0xEF9F27"/>
+        <color name="col_amber_dim"   value="0x854F0B"/>
+
+        <!-- Colors — mode badge -->
+        <color name="col_badge_single_text"   value="0x888780"/>
+        <color name="col_badge_single_bg"     value="0x1A1A18"/>
+        <color name="col_badge_single_border" value="0x2A2A28"/>
+        <color name="col_badge_auto_bg"       value="0x0D1A12"/>
+        <color name="col_badge_auto_border"   value="0x1A4028"/>
+
+        <!-- Colors — status strip -->
+        <color name="col_strip_border" value="0x111A14"/>
+        <color name="col_strip_div"    value="0x1A2A20"/>
+
+        <!-- Colors — day tiles -->
+        <color name="col_tile_def_bg"       value="0x0D1117"/>
+        <color name="col_tile_alarm_bg"     value="0x0D1510"/>
+        <color name="col_tile_sel_arm_bg"   value="0x0A1F10"/>
+        <color name="col_tile_def_label"    value="0x2A4535"/>
+        <color name="col_tile_def_time"     value="0x1E3A2A"/>
+        <color name="col_tile_def_pip"      value="0x1A2A20"/>
+    </consts>
+
+    <!-- =========================================================
+         Global styles
+         ========================================================= -->
+
+    <styles>
+        <!-- ModeBadge — SINGLE (grey) -->
+        <style name="badge_manual"
+               bg_color="0x1A1A18"
+               bg_opa="255"
+               radius="4"
+               border_width="1"
+               border_color="0x2A2A28"
+               text_color="0x888780"
+               pad_top="2" pad_bottom="2"
+               pad_left="7" pad_right="7"/>
+
+        <!-- ModeBadge — AUTO (green) -->
+        <style name="badge_auto"
+               bg_color="0x0D1A12"
+               bg_opa="255"
+               radius="4"
+               border_width="1"
+               border_color="0x1A4028"
+               text_color="0x1AFF8C"
+               pad_top="2" pad_bottom="2"
+               pad_left="7" pad_right="7"/>
+
+        <!-- DayTile — default -->
+        <style name="tile_default"
+               bg_color="0x0D1117"
+               bg_opa="255"
+               radius="6"
+               border_width="1"
+               border_color="0x1A2520"
+               opa="255"
+               text_color="0x2A4535"/>
+
+        <!-- DayTile — has alarm set -->
+        <style name="tile_has_alarm"
+               bg_color="0x0D1510"
+               bg_opa="255"
+               radius="6"
+               border_width="1"
+               border_color="0x1A3A28"
+               opa="255"
+               text_color="0x0E6A3A"/>
+
+        <!-- DayTile — selected and armed -->
+        <style name="tile_sel_armed"
+               bg_color="0x0A1F10"
+               bg_opa="255"
+               radius="6"
+               border_width="1"
+               border_color="0x1AFF8C"
+               opa="255"
+               text_color="0x1AFF8C"/>
+
+        <!-- DayTile — selected but disarmed (same colours at 45% opacity) -->
+        <style name="tile_sel_disarmed"
+               bg_color="0x0A1F10"
+               bg_opa="255"
+               radius="6"
+               border_width="1"
+               border_color="0x1AFF8C"
+               opa="115"
+               text_color="0x1AFF8C"/>
+
+        <!-- DayTile pip colours — applied to the pip child object -->
+        <style name="tile_pip_default"  bg_color="0x1A2A20"/>
+        <style name="tile_pip_alarm"    bg_color="0x0E6A3A"/>
+        <style name="tile_pip_sel"      bg_color="0x1AFF8C"/>
+    </styles>
+
+    <!-- =========================================================
+         Fonts — TinyTTF loaded from file (as_file="true").
+         Font sizes match spec tokens exactly.
+         Paths are relative; call lv_xml_set_default_asset_path()
+         before lv_xml_register_component_from_file("globals.xml").
+         ========================================================= -->
+
+    <fonts>
+        <!-- Orbitron Bold — primary clock / heading face -->
+        <tiny_ttf as_file="true" name="orbitron_88"  src_path="fonts/DejaVuSansMono-Bold.ttf"    size="88"/>
+        <tiny_ttf as_file="true" name="orbitron_82"  src_path="fonts/DejaVuSansMono-Bold.ttf"    size="82"/>
+        <tiny_ttf as_file="true" name="orbitron_20"  src_path="fonts/DejaVuSansMono-Bold.ttf"    size="20"/>
+        <tiny_ttf as_file="true" name="orbitron_17"  src_path="fonts/DejaVuSansMono-Bold.ttf"    size="17"/>
+        <tiny_ttf as_file="true" name="orbitron_9r"  src_path="fonts/DejaVuSansMono.ttf" size="9"/>
+
+        <!-- Share Tech Mono — status / labels -->
+        <tiny_ttf as_file="true" name="mono_11"      src_path="fonts/DejaVuSansMono.ttf" size="11"/>
+        <tiny_ttf as_file="true" name="mono_10"      src_path="fonts/DejaVuSansMono.ttf" size="10"/>
+    </fonts>
+
+</globals>

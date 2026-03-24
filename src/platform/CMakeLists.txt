@@ -1,0 +1,5 @@
+if(ESP_PLATFORM)
+    # ESP32 entry point handled by main/CMakeLists.txt (IDF convention)
+else()
+    add_subdirectory(simulator)
+endif()

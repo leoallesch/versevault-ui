@@ -1,0 +1,59 @@
+<!-- C05a · DayTile
+     Individual day tile — used ×7 inside DayRow.
+     min-width 56px · border-radius 6px · padding 8px all sides.
+
+     Visual states (C applies via lv_obj_set_style_* or lv_obj_add_style):
+       default         — bg #0D1117, border #1A2520, label #2A4535, time #1E3A2A, pip #1A2A20
+       has_alarm       — bg #0D1510, border #1A3A28, label/time/pip #0E6A3A
+       selected_armed  — bg #0A1F10, border #1AFF8C, label/time/pip #1AFF8C + clock blinks
+       selected_disarm — selected_armed at 45% opacity (lv_obj_set_style_opa), pip #1A2A20
+
+     day_label: e.g. "MON" — Orbitron Regular 9px
+     day_time:  e.g. "6:30" or "——" (two U+2014) — Share Tech Mono 10px
+     pip:       4×4px circle, bottom-center -->
+
+<component>
+    <api>
+        <prop name="day_name" type="string" default="MON" help="3-char day name"/>
+    </api>
+
+    <!-- Root tile object — flex column, center-aligned.
+         Styled via global tile_* styles swapped at runtime. -->
+    <view extends="lv_obj"
+          name="tile_root"
+          width="content" height="content"
+          style_min_width="56"
+          style_pad_top="6"    style_pad_bottom="6"
+          style_pad_left="6"   style_pad_right="6"
+          style_layout="flex"
+          style_flex_flow="column"
+          style_flex_main_place="center"
+          style_flex_cross_place="center"
+          style_pad_row="3"
+          scrollable="false">
+        <style name="tile_default"/>
+
+        <!-- Day label — e.g. MON -->
+        <lv_label name="tile_day"
+                  text="$day_name"
+                  width="44"
+                  style_text_font="orbitron_9r"
+                  style_text_align="center"/>
+
+        <!-- Alarm time — e.g. '7:15A' or '——' -->
+        <lv_label name="tile_time"
+                  width="44"
+                  style_text_font="mono_10"
+                  style_text_align="center"/>
+
+        <!-- Pip indicator — 4×4 circle, bottom-center -->
+        <lv_obj name="tile_pip"
+                width="4" height="4"
+                style_radius="2"
+                style_bg_opa="255"
+                style_border_width="0">
+            <style name="tile_pip_default"/>
+        </lv_obj>
+
+    </view>
+</component>

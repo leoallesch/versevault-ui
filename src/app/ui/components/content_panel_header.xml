@@ -1,0 +1,15 @@
+<!-- C02a · ContentPanelHeader
+     Context label or alert heading — children injected by caller.
+     Hidden on IDLE — C uses lv_obj_set_style_opa(0/255) or LV_OBJ_FLAG_HIDDEN. -->
+
+<component>
+    <view extends="lv_obj"
+          name="cp_header"
+          width="100%" height="content"
+          style_bg_opa="0"
+          style_border_width="0"
+          style_pad_top="4"   style_pad_bottom="2"
+          style_pad_left="22" style_pad_right="22"
+          scrollable="false">
+    </view>
+</component>

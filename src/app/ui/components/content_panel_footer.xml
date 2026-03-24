@@ -1,0 +1,21 @@
+<!-- C02d · ContentPanelFooter
+     Always present — children injected by caller.
+     C re-styles footer_label on cp_footer_mode change.
+
+     cp_footer_mode:
+       0 = hidden   — LV_OBJ_FLAG_HIDDEN
+       1 = hint     — mono_10, #1E4030
+       2 = alarm    — mono_11, #1A7A4A
+       3 = dismiss  — mono_11, #EF9F27 -->
+
+<component>
+    <view extends="lv_obj"
+          name="cp_footer"
+          width="100%" height="content"
+          style_bg_opa="0"
+          style_border_width="0"
+          style_pad_top="4"   style_pad_bottom="3"
+          style_pad_left="22" style_pad_right="22"
+          scrollable="false">
+    </view>
+</component>

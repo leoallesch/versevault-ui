@@ -1,0 +1,32 @@
+<!-- C05 · DayRow
+     Horizontal row of 7 DayTile sub-components.
+     Used in ContentPanelWidget slot during SET_AUTO_EDIT only.
+     Flex row · gap 5px · justify-content center.
+     C presenter updates tile styles directly via lv_obj_set_style_*. -->
+
+<component>
+    <!-- Root: flex row, centered, gap 5px -->
+    <view extends="lv_obj"
+          name="day_row"
+          width="100%" height="content"
+          style_layout="flex"
+          style_flex_flow="row"
+          style_flex_main_place="center"
+          style_flex_cross_place="center"
+          style_pad_column="5"
+          style_pad_top="6"   style_pad_bottom="4"
+          style_pad_left="22" style_pad_right="22"
+          style_bg_opa="0"
+          style_border_width="0"
+          scrollable="false">
+
+        <day_tile name="tile_mon" day_name="MON"/>
+        <day_tile name="tile_tue" day_name="TUE"/>
+        <day_tile name="tile_wed" day_name="WED"/>
+        <day_tile name="tile_thu" day_name="THU"/>
+        <day_tile name="tile_fri" day_name="FRI"/>
+        <day_tile name="tile_sat" day_name="SAT"/>
+        <day_tile name="tile_sun" day_name="SUN"/>
+
+    </view>
+</component>

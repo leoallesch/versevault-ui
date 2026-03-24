@@ -1,0 +1,13 @@
+<!-- C09 · WiFiBadge
+     WiFi indicator using LV_SYMBOL_WIFI from the built-in symbol font.
+     C sets color: #1AFF8C when connected, #0E6A3A when offline. -->
+
+<component>
+    <view extends="lv_label"
+          name="wifi_badge"
+          text="&#xF1EB;"
+          style_text_color="0x1AFF8C"
+          style_bg_opa="0"
+          style_border_width="0"
+          style_pad_all="0"/>
+</component>

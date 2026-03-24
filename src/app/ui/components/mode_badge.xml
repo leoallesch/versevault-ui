@@ -1,0 +1,17 @@
+<!-- C08 · ModeBadge
+     Pill label showing SINGLE or AUTO alarm mode.
+     C updates text and swaps style on mode subject change.
+
+     mode subject values:
+       0 = SINGLE — grey bg (#1A1A18), grey text (#888780), grey border (#2A2A28)
+       1 = AUTO   — green bg (#0D1A12), green text (#1AFF8C), green border (#1A4028) -->
+
+<component>
+    <!-- C swaps style and text directly -->
+    <view extends="lv_label"
+          name="mode_badge"
+          width="80"
+          style_text_align="center">
+          <style name="badge_manual" />
+    </view>
+</component>

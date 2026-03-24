@@ -1,0 +1,20 @@
+idf_component_register(
+    SRCS
+        "${CMAKE_CURRENT_LIST_DIR}/main.c"
+        "${CMAKE_CURRENT_LIST_DIR}/display_lvgl_st7789.c"
+        "${CMAKE_CURRENT_LIST_DIR}/gpio_datastream.c"
+        "${CMAKE_CURRENT_LIST_DIR}/nvs_datastream.c"
+        "${CMAKE_CURRENT_LIST_DIR}/timesource_esp32.c"
+    INCLUDE_DIRS
+        "${CMAKE_CURRENT_LIST_DIR}"
+    REQUIRES
+        siera
+        ui
+        app
+        lvgl
+        esp_lcd
+        esp_lvgl_port
+        driver
+        esp_timer
+        nvs_flash
+)

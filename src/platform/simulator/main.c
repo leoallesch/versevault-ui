@@ -1,17 +1,21 @@
 #include <stdio.h>
 
-#include "database.h"
-#include "demo_view.h"
+#include "application.h"
+#include "composite_datastream.h"
+#include "database_config.h"
 #include "display_simulator.h"
-#include "i_display.h"
+#include "nvs_datastream.h"
 #include "ram_datastream.h"
+#include "rtc_simulator.h"
+#include "simulator_flash_kv.h"
 #include "timer.h"
 #include "timesource_simulator.h"
 
 #include "bsp_config.h"
+#include "ui_alarmclock.h"
 
-#define DISPLAY_WIDTH 340
-#define DISPLAY_HEIGHT 240
+#define DISPLAY_WIDTH 480
+#define DISPLAY_HEIGHT 320
 
 // BSP datastream: entries indexed by database key, non-BSP keys have size 0
 static ram_datastream_entry_t bsp_entries[database_key_count] = {
@@ -33,10 +37,22 @@ static ram_datastream_entry_t ram_entries[database_key_count] = {
 static database_ram_storage_t ram_storage;
 static ram_datastream_t ram_stream;
 
-static s_database_t database;
+// NVS datastream (persistent, simulator-side via file-backed flash KV)
+static nvs_datastream_entry_t nvs_entries[database_key_count] = {
+  DATABASE(EXPAND_AS_NVS_ENTRY)
+};
+static nvs_datastream_config_t nvs_config = {
+  .entries = nvs_entries,
+  .count   = database_key_count,
+};
+static simulator_flash_kv_t flash_kv;
+static nvs_datastream_t nvs_stream;
+
+static event_subscription_t database_relays[3];
+static composite_datastream_t database;
 static s_timer_controller_t timer_controller;
 static display_simulator_t display;
-static demo_view_t demo_view;
+static application_t app;
 
 int main(void)
 {
@@ -56,15 +72,20 @@ int main(void)
   };
   ram_datastream_init(&ram_stream, &ram_config, &ram_storage);
 
+  // Init NVS datastream (persistent, backed by a file)
+  simulator_flash_kv_init(&flash_kv, "storage.bin");
+  nvs_datastream_init(&nvs_stream, &nvs_config, &flash_kv.interface);
+
   // Build composite database
   i_datastream_t* streams[] = {
     &bsp_stream.interface,
     &ram_stream.interface,
+    &nvs_stream.interface,
   };
-  database_init(&database, streams, NUM_ELEMENTS(streams));
+  composite_datastream_init(&database, streams, NUM_ELEMENTS(streams), database_relays);
 
-  // Init LVGL and display
   lv_init();
+  ui_alarmclock_init("A:/src/app/ui/");
 
   display_simulator_init(
     &display,
@@ -72,14 +93,18 @@ int main(void)
     DISPLAY_HEIGHT,
     sim_inputs,
     NUM_ELEMENTS(sim_inputs),
-    &bsp_stream.interface);
+    &bsp_stream.interface,
+    &ram_stream.interface,
+    key_current_view);
 
   i_timesource_t* timesource = timesource_simulator();
   timer_controller_init(&timer_controller, timesource);
 
-  demo_view_init(&demo_view, &database);
-
-  display_update(&display.interface, &demo_view.interface);
+  application_init(
+    &app,
+    &database.interface,
+    &timer_controller,
+    rtc_simulator());
 
   while(1) {
     uint32_t time_till_next = lv_timer_handler();

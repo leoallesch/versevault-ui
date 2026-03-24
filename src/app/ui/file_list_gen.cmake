@@ -1,0 +1,19 @@
+list(
+  APPEND
+  PROJECT_SOURCES
+  ${CMAKE_CURRENT_LIST_DIR}/components/bottom_bar_gen.c
+  ${CMAKE_CURRENT_LIST_DIR}/components/clock_display_gen.c
+  ${CMAKE_CURRENT_LIST_DIR}/components/content_panel_body_gen.c
+  ${CMAKE_CURRENT_LIST_DIR}/components/content_panel_footer_gen.c
+  ${CMAKE_CURRENT_LIST_DIR}/components/content_panel_gen.c
+  ${CMAKE_CURRENT_LIST_DIR}/components/content_panel_header_gen.c
+  ${CMAKE_CURRENT_LIST_DIR}/components/content_panel_widget_gen.c
+  ${CMAKE_CURRENT_LIST_DIR}/components/day_row_gen.c
+  ${CMAKE_CURRENT_LIST_DIR}/components/day_tile_gen.c
+  ${CMAKE_CURRENT_LIST_DIR}/components/idle_gen.c
+  ${CMAKE_CURRENT_LIST_DIR}/components/mode_badge_gen.c
+  ${CMAKE_CURRENT_LIST_DIR}/components/status_strip_gen.c
+  ${CMAKE_CURRENT_LIST_DIR}/components/top_bar_gen.c
+  ${CMAKE_CURRENT_LIST_DIR}/components/wifi_badge_gen.c
+  ${CMAKE_CURRENT_LIST_DIR}/ui_alarmclock_gen.c
+  ${CMAKE_CURRENT_LIST_DIR}/ui_alarmclock.c)

@@ -1,0 +1,10 @@
+<project name="ui_alarmclock">
+	<targets>
+		<target name="esp32">
+			<display width="480" height="320" />
+		</target>
+		<target name="simulator">
+			<display width="480" height="320" />
+		</target>
+	</targets>
+</project>
